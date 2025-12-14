@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Royal Velocity</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            text-align: center;
+            background: linear-gradient(#000, #222);
+            color: white;
+        }
+
+        h1 {
+            margin-top: 20px;
+            color: gold;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .track {
+            width: 90%;
+            height: 220px;
+            border: 2px solid white;
+            margin: 20px auto;
+            position: relative;
+            background: #333;
+        }
+
+        .car {
+            width: 60px;
+            height: 30px;
+            position: absolute;
+            left: 0;
+            border-radius: 5px;
+        }
+
+        .player {
+            background: gold;
+            top: 30px;
+        }
+
+        .ai1 {
+            background: red;
+            top: 90px;
+        }
+
+        .ai2 {
+            background: blue;
+            top: 150px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Royal Velocity</h1>
+
+<h3>Select Your Car</h3>
+
+<button onclick="selectCar('Rolls Royce')">Rolls Royce</button>
+<button onclick="selectCar('Thar')">Thar</button>
+<button onclick="selectCar('Creta')">Creta</button>
+<button onclick="selectCar('Baleno')">Baleno</button>
+<button onclick="selectCar('Range Rover')">Range Rover</button>
+
+<h3 id="selectedCar">No car selected</h3>
+
+<button onclick="startRace()">Start Race</button>
+
+<div class="track">
+    <div id="player" class="car player"></div>
+    <div id="ai1" class="car ai1"></div>
+    <div id="ai2" class="car ai2"></div>
+</div>
+
+<h2 id="result"></h2>
+
+<script>
+    let chosenCar = "";
+    let playerPos = 0;
+    let ai1Pos = 0;
+    let ai2Pos = 0;
+    let race;
+
+    function selectCar(car) {
+        chosenCar = car;
+        document.getElementById("selectedCar").innerText =
+            "Selected Car: " + car;
+    }
+
+    function startRace() {
+        if (chosenCar === "") {
+            alert("Please select a car first");
+            return;
+        }
+
+        playerPos = 0;
+        ai1Pos = 0;
+        ai2Pos = 0;
+        document.getElementById("result").innerText = "";
+
+        race = setInterval(() => {
+            playerPos += Math.random() * 10;
+            ai1Pos += Math.random() * 9;
+            ai2Pos += Math.random() * 8;
+
+            document.getElementById("player").style.left = playerPos + "px";
+            document.getElementById("ai1").style.left = ai1Pos + "px";
+            document.getElementById("ai2").style.left = ai2Pos + "px";
+
+            if (playerPos > 600) {
+                clearInterval(race);
+                document.getElementById("result").innerText =
+                    "You Win with " + chosenCar;
+            }
+        }, 100);
+    }
+</script>
+
+</body>
+</html>
