@@ -1,127 +1,126 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Royal Velocity</title>
+<title>Royal Velocity</title>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial;
-            text-align: center;
-            background: linear-gradient(#000, #222);
-            color: white;
-        }
+<style>
+body{
+    margin:0;
+    font-family: Arial;
+    background: radial-gradient(circle, #000, #111);
+    color:white;
+    text-align:center;
+}
 
-        h1 {
-            margin-top: 20px;
-            color: gold;
-        }
+h1{
+    color:gold;
+    letter-spacing:2px;
+}
 
-        button {
-            padding: 10px 15px;
-            margin: 5px;
-            font-size: 14px;
-            cursor: pointer;
-        }
+button{
+    padding:10px 14px;
+    margin:5px;
+    border:none;
+    cursor:pointer;
+    border-radius:6px;
+    font-weight:bold;
+}
 
-        .track {
-            width: 90%;
-            height: 220px;
-            border: 2px solid white;
-            margin: 20px auto;
-            position: relative;
-            background: #333;
-        }
+.track{
+    width:95%;
+    height:260px;
+    margin:20px auto;
+    border:2px solid gold;
+    position:relative;
+    background:#222;
+    border-radius:10px;
+}
 
-        .car {
-            width: 60px;
-            height: 30px;
-            position: absolute;
-            left: 0;
-            border-radius: 5px;
-        }
+.car{
+    width:80px;
+    height:40px;
+    position:absolute;
+    left:0;
+}
 
-        .player {
-            background: gold;
-            top: 30px;
-        }
+.car img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:6px;
+}
 
-        .ai1 {
-            background: red;
-            top: 90px;
-        }
+.player{ top:30px; }
+.ai1{ top:110px; }
+.ai2{ top:190px; }
 
-        .ai2 {
-            background: blue;
-            top: 150px;
-        }
-    </style>
+#result{
+    color:gold;
+    font-size:20px;
+}
+</style>
 </head>
 
 <body>
 
 <h1>Royal Velocity</h1>
+<p>Select Your Royal Car</p>
 
-<h3>Select Your Car</h3>
+<button onclick="selectCar('rolls.jpg','Rolls Royce')">Rolls Royce</button>
+<button onclick="selectCar('thar.jpg','Thar')">Thar</button>
+<button onclick="selectCar('creta.jpg','Creta')">Creta</button>
+<button onclick="selectCar('baleno.jpg','Baleno')">Baleno</button>
+<button onclick="selectCar('range.jpg','Range Rover')">Range Rover</button>
 
-<button onclick="selectCar('Rolls Royce')">Rolls Royce</button>
-<button onclick="selectCar('Thar')">Thar</button>
-<button onclick="selectCar('Creta')">Creta</button>
-<button onclick="selectCar('Baleno')">Baleno</button>
-<button onclick="selectCar('Range Rover')">Range Rover</button>
-
-<h3 id="selectedCar">No car selected</h3>
-
+<h3 id="selected">No car selected</h3>
 <button onclick="startRace()">Start Race</button>
 
 <div class="track">
-    <div id="player" class="car player"></div>
-    <div id="ai1" class="car ai1"></div>
-    <div id="ai2" class="car ai2"></div>
+    <div class="car player"><img id="playerImg"></div>
+    <div class="car ai1"><img src="images/thar.jpg"></div>
+    <div class="car ai2"><img src="images/range.jpg"></div>
 </div>
 
 <h2 id="result"></h2>
 
 <script>
-    let chosenCar = "";
-    let playerPos = 0;
-    let ai1Pos = 0;
-    let ai2Pos = 0;
-    let race;
+let chosen="";
+let img="";
+let p=0,a1=0,a2=0;
+let race;
 
-    function selectCar(car) {
-        chosenCar = car;
-        document.getElementById("selectedCar").innerText =
-            "Selected Car: " + car;
+function selectCar(image,name){
+    img=image;
+    chosen=name;
+    document.getElementById("playerImg").src="images/"+image;
+    document.getElementById("selected").innerText="Selected Car: "+name;
+}
+
+function startRace(){
+    if(chosen==""){
+        alert("Select a car first");
+        return;
     }
 
-    function startRace() {
-        if (chosenCar === "") {
-            alert("Please select a car first");
-            return;
+    p=0;a1=0;a2=0;
+    document.getElementById("result").innerText="";
+
+    race=setInterval(()=>{
+        p+=Math.random()*10;
+        a1+=Math.random()*9;
+        a2+=Math.random()*8;
+
+        document.querySelector(".player").style.left=p+"px";
+        document.querySelector(".ai1").style.left=a1+"px";
+        document.querySelector(".ai2").style.left=a2+"px";
+
+        if(p>600){
+            clearInterval(race);
+            document.getElementById("result").innerText=
+            "Winner: "+chosen;
         }
-
-        playerPos = 0;
-        ai1Pos = 0;
-        ai2Pos = 0;
-        document.getElementById("result").innerText = "";
-
-        race = setInterval(() => {
-            playerPos += Math.random() * 10;
-            ai1Pos += Math.random() * 9;
-            ai2Pos += Math.random() * 8;
-
-            document.getElementById("player").style.left = playerPos + "px";
-            document.getElementById("ai1").style.left = ai1Pos + "px";
-            document.getElementById("ai2").style.left = ai2Pos + "px";
-
-            if (playerPos > 600) {
-                clearInterval(race);
-                document.getElementById("result").innerText =
-                    "You Win with " + chosenCar;
-            }
-        }, 100);
-    }
+    },100);
+}
 </script>
 
 </body>
